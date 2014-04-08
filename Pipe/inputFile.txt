@@ -1,0 +1,30 @@
+We can determine which low-level file descriptor is being used for a file stream by calling the fileno
+function. It returns the file descriptor for a given stream, or -1 on failure. This function can be useful if
+you need low-level access to an open stream, for example, to call fstat on it.
+We can create a new file stream based on an already-opened file descriptor by calling the fdopen function.
+Essentially, this function provides stdio buffers around an already-open file descriptor, which
+might be an easier way to explain it.
+The fdopen function operates in the same way as the fopen function, but instead of a filename it takes a
+low-level file descriptor. This can be useful if we have used open to create a file, perhaps to get fine control
+over the permissions, but want to use a stream for writing to it. The mode parameter is the same as
+for the fopen function and must be compatible with the file access modes established when the file was
+originally opened. fdopen returns the new file stream or NULL on failure.
+
+
+
+In the next program, printdir.c, we put together a lot of the file
+manipulation functions to create a
+simple directory listing. Each file in a directory is listed on a line by
+itself. Each subdirectory has its
+name followed by a slash and the files listed in it are indented by four
+spaces.
+The program changes directory into the subdirectories so that the files it
+finds have usable names, that is,
+they can be passed directly to opendir. The program will fail on very deeply
+nested directory structures
+because there.s a limit on the allowed number of open directory streams.
+We could, of course, make it more general by taking a command line argument to
+specify the start
+point. Check out the Linux source code of such utilities as ls and find for
+ideas on a more general
+implementation.

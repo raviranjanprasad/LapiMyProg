@@ -1,0 +1,51 @@
+#include<iostream>
+#include<typeinfo>
+
+using namespace std;
+
+class Base{
+ double m_bd;
+ int m_bi;
+public:
+  Base(double d=0.0,int i=0):m_bd(d),m_bi(i){}
+  virtual void Display(){cout <<"m_bd="<<m_bd<<"m_bi="<<m_bi<<endl;}
+  // error: cannot dynamic_cast âb1âof type âass Base*âto type âass Drive*âsource type is not polymorphic)
+  //~Base();
+  // warning: dynamic_cast of âse b1âo âass Drive*âan never succeed
+  //virtual ~Base();
+  ~Base(){}
+};
+
+class Drive:public Base{
+ double m_derd;
+ int m_deri;
+public:
+ Drive(double d=0.0,int i=0):m_derd(d),m_deri(i){}
+ void Display(){cout <<"m_derd="<<m_derd<<"m_deri="<<m_deri<<endl;}
+ ~Drive(){}
+};
+
+class Unrelate{
+ double m_unreld;
+ int m_unreli;
+public:
+ Unrelate(double d=0.0,int i=0):m_unreld(d),m_unreli(i){}
+ void Display(){cout <<"m_unreld="<<m_unreld<<"m_unreli="<<m_unreli<<endl;}
+
+};
+
+int main(int argc, char *argv[])
+{
+   Base *bptr;
+   Drive *dptr;
+   Base b1(10.20);
+   Drive d1(40,60);
+
+   bptr = dynamic_cast<Base*>(&d1);
+   bptr->Display();
+  // warning: dynamic_cast of âse b1âo âass Drive*âan never succeed
+   dptr = dynamic_cast<Drive*>(&b1);
+   dptr->Display();
+  
+   return 0;
+}

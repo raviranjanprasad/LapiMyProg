@@ -1,0 +1,86 @@
+[ravi@ravi ShareLibLoadingGDB]$ gdb test
+GNU gdb (GDB) Fedora (7.0-3.fc12)
+Copyright (C) 2009 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "i686-redhat-linux-gnu".
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>...
+Reading symbols from /home/ravi/MyProg/Posix/ShareLibLoadingGDB/test...done.
+(gdb) b main
+Breakpoint 1 at 0x804858f: file test.c, line 21.
+(gdb) run
+Starting program: /home/ravi/MyProg/Posix/ShareLibLoadingGDB/test
+
+Breakpoint 1, main () at test.c:21
+21              initRand();
+(gdb) info share
+From        To          Syms Read   Shared Object Library
+0x00aeb830  0x00b02ccf  Yes (*)     /lib/ld-linux.so.2
+0x00a0f3f0  0x00a0f5b8  Yes (*)     ./libmyrand.so
+0x00b23990  0x00c2ee40  Yes (*)     /lib/libc.so.6
+(*): Shared library is missing debugging information.
+(gdb) l
+16      int main()
+17      {
+18              long  isum;
+19              long i;
+20              /* Initialize the random number API */
+21              initRand();
+22
+23              /* Find the average of getRand(10) returns (0..9) */
+24              isum = 0L;
+25              for (i = 0 ; i < ITERATIONS ; i++) {
+(gdb) l
+26
+27                      isum += getRand(10);
+28
+29              }
+30
+31              printf( "getRand() Average %d\n", (int)(isum / ITERATIONS) );
+32
+33
+34              findAvg();
+35
+(gdb) b 34
+Breakpoint 2 at 0x80485ea: file test.c, line 34.
+(gdb) c
+Continuing.
+getRand() Average 4
+
+Breakpoint 2, main () at test.c:34
+34              findAvg();
+(gdb) s
+findAvg () at test.c:7
+7               int fsum = 0.0;
+(gdb) info share
+From        To          Syms Read   Shared Object Library
+0x00aeb830  0x00b02ccf  Yes (*)     /lib/ld-linux.so.2
+0x00a0f3f0  0x00a0f5b8  Yes         ./libmyrand.so
+0x00b23990  0x00c2ee40  Yes (*)     /lib/libc.so.6
+(*): Shared library is missing debugging information.
+(gdb) n
+9               for (i = 0 ; i < ITERATIONS ; i++) {
+(gdb) n
+11                      fsum += getSRand();
+(gdb) s
+getSRand () at randapi.c:7
+7               randvalue = ((float)rand() / (float)RAND_MAX);
+(gdb) n
+9               return randvalue;
+(gdb) p randvalue
+$1 = 0.214388475
+(gdb)
+$2 = 0.214388475
+(gdb)
+$3 = 0.214388475
+(gdb) q
+A debugging session is active.
+
+        Inferior 1 [process 6602] will be killed.
+
+Quit anyway? (y or n) y
+[ravi@ravi ShareLibLoadingGDB]$
+

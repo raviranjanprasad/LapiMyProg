@@ -1,0 +1,59 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  arrayListType.h
+ *
+ *    Description:  
+ *
+ *        Version:  1.0
+ *        Created:  03/15/2014 11:33:59 AM
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  Ravi Prasad (Senior software Engineer), ravi_prasad@symantec.com
+ *   Organization:  Symantec Software
+ *
+ * =====================================================================================
+ */
+ #ifndef _ARRAYLISTTYPE_H
+ #define _ARRAYLISTTYPE_H
+ #include <aupecpp.h>
+ 
+ template <class T>
+ class arrayListType{
+ public:
+ 	//class methods
+ 	bool isEmpty() const;
+	bool isFull() const;
+	int listSize() const;
+	int maxListSize() const;
+	bool isItemAtEqual(int , const T&) const; //First argument is the index location 
+	void insertAt(int, const T&);
+	void insertAtEnd(const T&);
+	void removeAt(int);
+	void retrieveAt(int, T &) const; 
+	void replaceAt(int , const T& );
+	void clearList();
+	int search(const T& ) const;
+	void insert(const T& );
+	void remove(const T&);
+	void print() const;
+	
+	//Class basic entities
+	arrayListType(int maxSz=5):m_maxSize(maxSz){
+	        m_length = 0;
+		m_list = new T[m_maxSize];
+		assert(m_list != NULL);
+	}
+	arrayListType(const arrayListType<T> &);
+	const arrayListType<T>& operator=(const arrayListType<T>&);
+	virtual ~arrayListType();
+protected:
+	T *m_list;
+	int m_length;
+	int m_maxSize;
+
+ };
+ #endif
+
+

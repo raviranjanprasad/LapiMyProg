@@ -1,0 +1,25 @@
+==============================
+Build the Program with
+make
+Clear the program with 
+make clean
+
+===============================
+We can tell that our new image is dependent upon our shared library by using the ldd command. The ldd command prints shared library dependencies for the given application. For example:
+
+$ ldd test
+    libmyrand.so => not found
+    libc.so.6 => /lib/tls/libc.so.6 (0x42000000)
+    /lib/ld-linux.so.2 => /lib/ld-linux.so.2 (0x40000000)
+$
+The ldd command identifies the shared libraries that will be used by test. The standard C library is shown (libc.so.6) as is the dynamic linker/loader (ld-linux.so.2). Note that our libmyrand.so file is shown as not found. It.s present in the current subdirectory with our application, but it must be explicitly specified to GNU/Linux. We do this through the LD_LIBRARY_PATH environment variable. After exporting the location of our shared library, we try our ldd command again:
+
+$ export LD_LIBRARY_PATH=./
+$ ldd test
+        libmyrand.so => ./libmyrand.so (0x40017000)
+        libc.so.6 => /lib/tls/libc.so.6 (0x42000000)
+        /lib/ld-linux.so.2 => /lib/ld-linux.so.2 (0x40000000)
+$
+We specify that our shared libraries are found in the current directory (./), and then after performing another ldd, our shared library is successfully found.
+================================
+
