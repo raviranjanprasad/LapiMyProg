@@ -31,7 +31,7 @@ int main(){
     cout <<"========================\n";
     new (p) Person("Archana");
     p->display();
-    //p->~Person();
+    p->~Person();
     cout <<"========================\n";
     delete p;
 }
